@@ -97,41 +97,48 @@ public:
     // Append value at the end of the list
     void append(const E &it)
     {
-        DLink<E> *d = new DLink<E>();
-        d->theElement = *it;
+        curr = new DLink<E>();
+        curr->theElement = *it;
         if (this->head == nullptr && cnt == 0)
         {
-            this->head = d;
-            this->tail = d;
-            d->nextPtr = this->head;
-            d->prevPtr = this->tail;
+            this->head = curr;
+            this->tail = curr;
+            curr->nextPtr = this->head;
+            curr->prevPtr = this->tail;
         } 
         else
         {
             DLink<E> *temp;
             temp = this->tail;
-            this->tail = d;
+            this->tail = curr;
+            temp->nextPtr = this->tail;
+            this->tail->prevPtr = temp;
             this->tail->nextPtr = this->head;
             this->head->prevPtr = this->tail;
         }
-
-        //(this->tail == nullptr) ? (this->tail = d; this->head = ) : (this->tail->nextPtr->theElement = it);
+        ++cnt;
     }
 
     // Remove and return the current element
     E remove()
     {
-        //
-        // ??? - implement this method
-        //
+        DLink<E> *tempPrev, *tempNext;
+        E e;
+        tempPrev = curr->prevPtr;
+        tempNext = curr->nextPtr;
+        e = curr->theElement;
+        delete curr;
+        --cnt;
+        tempPrev->nextPtr = tempNext;
+        tempNext->prevPtr = tempPrev;
+        return e;
+
     }
 
     // Advance current to the previous element
     void prev()
     {
-        //
-        // ??? - implement this method
-        //
+        curr = curr->prevPtr;
     }
 
     // Return position of the current element
@@ -145,9 +152,10 @@ public:
     // Set current to the element at the given position
     void moveToPos(int pos)
     {
-        //
-        // ??? - implement this method
-        //
+        DLink<E> *newPos, *temp;
+        for(int p = 0; p < pos; ++p){
+            head
+        }
     }
 };
 
