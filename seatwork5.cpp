@@ -35,10 +35,10 @@ public:
     // The default constructor
     DList()
     {
-        head = nullptr;
-        tail = nullptr;
-        curr = nullptr;
-        cnt = 0;
+        this->head = nullptr;
+        this->tail = nullptr;
+        this->curr = nullptr;
+        this->cnt = 0;
     }
 
     // The copy constructor
@@ -53,31 +53,33 @@ public:
     // The class destructor
     ~DList()
     {
-        
+        ~(this->head);
+        ~(this->tail);
+        ~(this->curr);
     }
 
     // Empty the list
     void clear()
     {
-
+        
     }
 
     // Set current to first element
     void moveToStart()
     {
-        curr = head;
+        this->curr = this->head;
     }
 
     // Set current element to end of list
     void moveToEnd()
     {
-        curr = tail;
+        this->curr = this->tail;
     }
 
     // Advance current to the next element
     void next()
     {
-        curr = curr->nextPtr;
+        this->curr = this->curr->nextPtr;
     }
 
     // Return the current element
@@ -97,15 +99,17 @@ public:
     // Append value at the end of the list
     void append(const E &it)
     {
-        curr = new DLink<E>();
-        curr->theElement = *it;
+
+        DLink<E> entry = new DLink<E>();
+        entry->theElement = *it;
+
         if (this->head == nullptr && cnt == 0)
         {
-            this->head = curr;
-            this->tail = curr;
-            curr->nextPtr = this->head;
-            curr->prevPtr = this->tail;
-        } 
+            this->head = this->curr;
+            this->tail = this->curr;
+            this->curr->nextPtr = this->head;
+            this->curr->prevPtr = this->tail;
+        }
         else
         {
             DLink<E> *temp;
