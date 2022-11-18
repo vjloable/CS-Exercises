@@ -27,10 +27,6 @@ int main(){
         }
         newnode->value = i;
         
-        // DEBUG
-        //cout << newnode->value << " ";
-        // DEBUG
-
         if (newnode->next == NULL)
         {
             newnode->next = head;

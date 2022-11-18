@@ -1,5 +1,6 @@
 #include <iostream>
 #include <assert.h>
+#include <string>
 
 using namespace std;
 
@@ -11,6 +12,15 @@ struct DLink
     DLink<E> *prevPtr;
 };
 
+/*
+Complete this implementation variant of the doubly-linked list. Use the same
+convention as described in the slides. The DLink declaration to be used here is
+just a struct and should not be modified in any way. All of the operations of
+the original DLink class must be done in the methods of this class. Use
+assertions to ensure the correct operation of this ADT. All memory allocations
+should be checked with assertions and all discarded memory must be properly
+deallocated.
+*/
 template <class E>
 class DList
 {
@@ -35,10 +45,14 @@ public:
     // The default constructor
     DList()
     {
-        this->head = nullptr;
-        this->tail = nullptr;
-        this->curr = nullptr;
-        this->cnt = 0;
+        head = new DLink<E>();
+        tail = new DLink<E>();
+        head->nextPtr = tail;
+        tail->prevPtr = head;
+        tail->nextPtr = nullptr;
+        head->prevPtr = nullptr;
+        curr = head;
+        cnt = 0;
     }
 
     // The copy constructor
@@ -47,22 +61,21 @@ public:
         this->head = source.head;
         this->tail = source.tail;
         this->curr = source.curr;
-        this->cnt = 0;
     }
 
     // The class destructor
-    ~DList()
-    {
-        ~(this->head);
-        ~(this->tail);
-        ~(this->curr);
-    }
+    //~DList()
+    //{
+        ///~(this->head);
+        ///~(this->tail);
+        ///~(this->curr);
+    //}
 
     // Empty the list
-    void clear()
-    {
+    // void clear()
+    // {
         
-    }
+    // }
 
     // Set current to first element
     void moveToStart()
@@ -79,72 +92,97 @@ public:
     // Advance current to the next element
     void next()
     {
-        this->curr = this->curr->nextPtr;
+        (curr->nextPtr != NULL) ? curr = curr->nextPtr : curr = curr;
     }
 
     // Return the current element
     E &getValue() const
     {
-        return *(this->curr->theElement);
+        return this->curr->nextPtr->theElement;
     }
 
     // Insert value at current position
     void insert(const E &it)
     {
-        //
-        // ??? - implement this method
-        //
+        DLink<E> *entry = new DLink<E>();
+        entry->theElement = it;
+
+        entry->nextPtr = curr->nextPtr;
+        entry->prevPtr = curr;
+        curr->nextPtr->prevPtr = entry;
+        curr->nextPtr = entry;
+
+        cnt++;
+
+        // cout << endl;
+        // cout << "PREV PTR: " << curr->prevPtr << endl;
+        // cout << "CUR [PTR-VALUE]: " << curr << " - " << curr->theElement << endl;
+        // cout << "NEXT PTR: " << curr->nextPtr << endl;
+        // cout << endl;
+
     }
 
     // Append value at the end of the list
-    void append(const E &it)
-    {
+    // void append(const E &it)
+    // {
+    //     DLink<E> *entry = new DLink<E>();
+    //     entry->theElement = it;
 
-        DLink<E> entry = new DLink<E>();
-        entry->theElement = *it;
-
-        if (this->head == nullptr && cnt == 0)
-        {
-            this->head = this->curr;
-            this->tail = this->curr;
-            this->curr->nextPtr = this->head;
-            this->curr->prevPtr = this->tail;
-        }
-        else
-        {
-            DLink<E> *temp;
-            temp = this->tail;
-            this->tail = curr;
-            temp->nextPtr = this->tail;
-            this->tail->prevPtr = temp;
-            this->tail->nextPtr = this->head;
-            this->head->prevPtr = this->tail;
-        }
-        ++cnt;
-    }
+    //     DLink<E> *prevTail = tail->prevPtr;
+    //     prevTail->nextPtr = entry;
+    //     entry->prevPtr = tail->prevPtr;
+    //     entry->nextPtr = tail;
+    //     tail->prevPtr = entry;
+        
+    //     ++cnt;
+    // }
 
     // Remove and return the current element
     E remove()
     {
-        DLink<E> *tempPrev, *tempNext;
-        E e;
-        tempPrev = curr->prevPtr;
-        tempNext = curr->nextPtr;
-        e = curr->theElement;
-        delete curr;
-        --cnt;
-        tempPrev->nextPtr = tempNext;
-        tempNext->prevPtr = tempPrev;
-        return e;
+        DLink<E> *temp = curr->nextPtr;    
+        E tempE = temp->theElement;
 
+        curr->nextPtr = temp->nextPtr;
+        temp->nextPtr->prevPtr = curr;
+        delete temp;
+        
+        return tempE;
     }
 
     // Advance current to the previous element
-    void prev()
-    {
-        curr = curr->prevPtr;
-    }
+    // void prev()
+    // {
+    //     curr = curr->prevPtr;
+    // }
 
+    void debug()
+    {
+        cout << endl;
+
+        DLink<E> *temp = head;
+
+        cout << "CURRENT POINTER: " << ((temp == head) ? "HEAD" : (temp == tail) ? "TAIL" : to_string(temp->theElement)) << "\n"<< endl;
+        
+        int index = -1;
+
+        string tb = "         .------------.\n     ";
+        string bb = "         '------------'";
+        string ca = "    |  ";
+        string cb = "  |";
+        string al = "             ^    .\n             |    |\n    ";
+        string ac = " |    | ";
+        string ar = "\n             |    |\n             '    v";
+        while (temp != nullptr)
+        {
+            cout << tb << ca << temp << cb + " = " << ((temp == head) ? "HEAD" : (temp == tail) ? "TAIL" : ("i " + to_string(index) + ": " + to_string(temp->theElement))) << "\n" + bb << endl;
+            (temp != tail) ? (cout << al << temp << ac << temp->nextPtr << ar << endl) : (cout << endl);
+            
+            temp = temp->nextPtr;
+            index++;
+        }
+    }
+    /*
     // Return position of the current element
     int currPos() const
     {
@@ -160,7 +198,7 @@ public:
         for(int p = 0; p < pos; ++p){
             head
         }
-    }
+    }*/
 };
 
 /*
@@ -173,27 +211,39 @@ int main(void)
     DList<int> theList;
 
     // populate the list
-    for (i = 0; i < 10; ++i)
+    for (i = 0; i < 5; ++i)
     {
-        theList.append(i);
+        theList.insert(i+50);
     }
-    while (i < 20)
-    {
-        theList.insert(i);
 
-        ++i;
-    }
+    theList.debug();
+    cout << theList.remove() << endl;
+    cout << theList.remove() << endl;
+    cout << theList.remove() << endl;
+    theList.debug();
+    // cout << "------------" << endl;
+    // cout << theList.remove() << endl;
+    // theList.debug();
+
+    // while (i < 20)
+    // {
+    //     theList.insert(i);
+
+    //     ++i;
+    // }
+
+    //theList.debug();                
 
     // display the contents of the list
-    theList.moveToStart();
-    for (i = 0; i < theList.length(); ++i)
-    {
-        cout << theList.getValue() << " ";
+        // theList.moveToStart();
+        // for (i = 0; i < theList.length(); ++i)
+        // {
+        //     cout << theList.getValue() << " ";
 
-        theList.next();
-    }
-    cout << "\n";
-
+        //     theList.next();
+        // }
+        // cout << "\n";
+    /*
     // display the contents of the list in reverse order
     theList.moveToEnd();
     for (i = 0; i < theList.length(); ++i)
@@ -237,6 +287,7 @@ int main(void)
         theList.next();
     }
     cout << "\n";
-
+    */
     return 0;
 }
+
