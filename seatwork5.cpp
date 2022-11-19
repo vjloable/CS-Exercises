@@ -1,3 +1,5 @@
+// VINCE JAPHETH F. LOABLE     2021 - 1910
+
 #include <iostream>
 #include <assert.h>
 #include <string>
@@ -30,7 +32,7 @@ class DList
     int cnt;
 
 private:
-    string spacer(int x)
+    string spacer(int x)                
     {
         string cc = "";
         for (int y = x - 7; y > 0; y--)
@@ -178,9 +180,9 @@ public:
                 //-----------------------------------cout<<"TEST             "<<this->curr<<endl;
                 this->curr->nextPtr->nextPtr->prevPtr = this->curr;
                 this->curr->nextPtr = curr->nextPtr->nextPtr;
+                delete temp;
+                this->cnt--;
             }
-            delete temp;
-            this->cnt--;
         }
         return tempE;
     }
@@ -283,81 +285,85 @@ int main(void)
     
     theList.debug(); //-----------------------------------------------------   DEBUG
     // populate the list
-    for (i = 0; i < 10; ++i)
-    {
-        theList.insert(i+50);
-    };
+    // for (i = 0; i < 10; ++i)
+    // {
+    //     theList.insert(i+50);
+    // };
+    theList.debug();
 
-    while (i < 20)
-    {
-        theList.insert(i);
+    DList<int> theDL = theList;
+    theDL.debug();
 
-        ++i;
-    }
+    // while (i < 20)
+    // {
+    //     theList.insert(i);
+
+    //     ++i;
+    // }
     
-    theList.debug(); //-----------------------------------------------------   DEBUG
-    // display the contents of the list
-    theList.moveToStart();
-    for (i = 0; i < theList.length(); ++i)
-    {
+    // theList.debug(); //-----------------------------------------------------   DEBUG
+    // // display the contents of the list
+    // theList.moveToStart();
+    // for (i = 0; i < theList.length(); ++i)
+    // {
         
-        cout << theList.getValue() << " ";
-        theList.next();
-    }
-    cout << "\n";
+    //     cout << theList.getValue() << " ";
+    //     theList.next();
+    // }
+    // cout << "\n";
 
-    theList.debug(); //-----------------------------------------------------   DEBUG
-    // display the contents of the list in reverse order
-    theList.moveToEnd();
-    for (i = 0; i < theList.length(); ++i)
-    {
-        theList.prev();
+    // theList.debug(); //-----------------------------------------------------   DEBUG
+    // // display the contents of the list in reverse order
+    // theList.moveToEnd();
+    // for (i = 0; i < theList.length(); ++i)
+    // {
+    //     theList.prev();
 
-        cout << theList.getValue() << " ";
-    }
-    cout << "\n";
+    //     cout << theList.getValue() << " ";
+    // }
+    // cout << "\n";
 
-    theList.debug(); //-----------------------------------------------------   DEBUG
-    // // replace the contents of the list
-    theList.clear();
-    theList.debug(); //-----------------------------------------------------   DEBUG
-    for (i = 0; i < 10; ++i)
-    {
-        theList.append(i + 100);
-    }
+    // theList.debug(); //-----------------------------------------------------   DEBUG
+    // // // replace the contents of the list
+    // theList.clear();
+    // theList.debug(); //-----------------------------------------------------   DEBUG
+    // for (i = 0; i < 10; ++i)
+    // {
+    //     theList.append(i + 100);
+    // }
 
-    theList.debug(); //-----------------------------------------------------   DEBUG
-    // display the contents of the list
-    theList.moveToStart();
-    for (i = 0; i < theList.length(); ++i)
-    {
-        cout << theList.getValue() << " ";
+    // theList.debug(); //-----------------------------------------------------   DEBUG
+    // // display the contents of the list
+    // theList.moveToStart();
+    // for (i = 0; i < theList.length(); ++i)
+    // {
+    //     cout << theList.getValue() << " ";
 
-        theList.next();
-    }
-    cout << "\n";
-    theList.debug(); //-----------------------------------------------------   DEBUG
+    //     theList.next();
+    // }
+    // cout << "\n";
+    // theList.debug(); //-----------------------------------------------------   DEBUG
 
-    // remove two elements at the specified position
-    theList.moveToPos(5);
-    theList.debug(); //-----------------------------------------------------   DEBUG
+    // // remove two elements at the specified position
+    // theList.moveToPos(5);
+    // theList.debug(); //-----------------------------------------------------   DEBUG
     
-    cout << theList.currPos() << "\n";
+    // cout << theList.currPos() << "\n";
 
-    theList.remove();
-    theList.remove();
-    theList.debug(); //-----------------------------------------------------   DEBUG
+    // theList.remove();
+    // theList.remove();
+    // theList.debug(); //-----------------------------------------------------   DEBUG
 
-    // display the contents of the list
-    theList.moveToStart();
-    for (i = 0; i < theList.length(); ++i)
-    {
-        cout << theList.getValue() << " ";
+    // // display the contents of the list
+    // theList.moveToStart();
+    // for (i = 0; i < theList.length(); ++i)
+    // {
+    //     cout << theList.getValue() << " ";
 
-        theList.next();
-    }
-    cout << "\n";
-    theList.debug(); //-----------------------------------------------------   DEBUG
+    //     theList.next();
+    // }
+    // cout << "\n";
+    // theList.debug(); //-----------------------------------------------------   DEBUG
 
     return 0;
 }
