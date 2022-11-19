@@ -2,8 +2,8 @@
 
 #include <iostream>
 #include <assert.h>
-#include <string>
-#include <sstream>
+// #include <string>
+// #include <sstream>
 using namespace std;
 
 template <class E>
@@ -31,26 +31,25 @@ class DList
     DLink<E> *curr;
     int cnt;
 
-private:
-    string spacer(int x)                
-    {
-        string cc = "";
-        for (int y = x - 7; y > 0; y--)
-        {
-            cc += " ";
-        }
-        return cc;
-    }
-
-    string dasher(int x)
-    {
-        string cc = "";
-        for (int y = x - 7; y > 0; y--)
-        {
-            cc += "-";
-        }
-        return cc;
-    }
+// private:
+//     string spacer(int x)                     //                
+//     {                                        //
+//         string cc = "";                      //
+//         for (int y = x - 7; y > 0; y--)      //
+//         {                                    //
+//             cc += " ";                       //
+//         }                                    //
+//         return cc;                           //
+//     }                                        //     FOR PERSONAL DEBUGGING PURPOSES
+//     string dasher(int x)                     //
+//     {                                        //
+//         string cc = "";                      //
+//         for (int y = x - 7; y > 0; y--)      //
+//         {                                    //
+//             cc += "-";                       //
+//         }                                    //
+//         return cc;                           //
+//     }                                        //
 
 public:
     // Return the size of the list
@@ -76,22 +75,35 @@ public:
         this->head->prevPtr = nullptr;
         this->curr = this->head;
         this->cnt = 0;
-        cout << "\n\n\n" << "Object created!\n\n\n"; 
+        cout << "\n\n\n" << this << " Object created!\n\n\n"; 
     }
 
     // The copy constructor
     DList(const DList &source)
     {
-        this->head = source.head;
-        this->tail = source.tail;
-        this->curr = source.curr;
-        this->cnt = source.cnt;
+        cout << "\n\n\n" << this << " Object copy created!\n\n\n"; 
+        this->head = new DLink<E>();
+        this->tail = new DLink<E>();
+        this->head->nextPtr = this->tail;
+        this->tail->prevPtr = this->head;
+        this->tail->nextPtr = nullptr;
+        this->head->prevPtr = nullptr;
+        this->curr = this->head;
+        this->cnt = 0;
+
+        DLink<E> *temp = source.head;
+        while (temp->nextPtr != source.tail)
+        {
+            append(temp->nextPtr->theElement);
+            temp = temp->nextPtr;
+        }
+        this->moveToPos(source.currPos());
     }
 
     // The class destructor
     ~DList()
     {
-        cout << "\n\n\n" << "Object destroyed!\n\n\n"; 
+        cout << "\n\n\n" << this << " Object destroyed!\n\n\n"; 
         this->clear();
         delete this->head;
         delete this->tail;
@@ -177,7 +189,6 @@ public:
             {
                 temp = this->curr->nextPtr;
                 tempE = temp->theElement;
-                //-----------------------------------cout<<"TEST             "<<this->curr<<endl;
                 this->curr->nextPtr->nextPtr->prevPtr = this->curr;
                 this->curr->nextPtr = curr->nextPtr->nextPtr;
                 delete temp;
@@ -225,53 +236,53 @@ public:
         }   
     }
 
-    void debug()
-    {
-        cout << endl;
-        DLink<E> *temp = head;
-        int index = -1;
-        int tempindex = 0;
-        string tb = "    .-----------";
-        string tl = ".\n";
-        string bb = "    '-----------";
-        string bl = "'";
-        string ca = "    |  ";
-        string cb = "  |";
-        string al = "        ^    .\n";
-        string tc = "        |    |\n";
-        string ac = " |    | ";
-        string ar = "        '    v";
-        string xx = "";
-        string xy = "";
-        string xz = "";
-        while (temp != nullptr)
-        {
-            ostringstream oss;
-            oss << curr;
-            string s(oss.str());
-            int space = (((s + " ").length()) - 1);
-            xz = (curr == temp ? "  <-- CURR" : " ");
-            cout << spacer(space) << tb << dasher(space) << tl << spacer(space) << ca << temp << cb + " = " << ((temp == head) ? "HEAD" : (temp == tail) ? "TAIL" : ("POS " + to_string(index) + ": " + to_string(temp->theElement))) << xz << "\n" + spacer(space) + bb << dasher(space) << bl << endl;
-            (temp != tail) ? (cout << spacer(space) << al << spacer(space) << tc << temp << ac << temp->nextPtr << "\n" << spacer(space) << tc << spacer(space) << ar << endl): (cout << endl);
-            if (temp == curr) {
-                tempindex = index;
-            }
-            xx = ((curr == head) ? " - HEAD" : (curr == tail) ? " - TAIL" : " - ITEM");
-            xy = (curr != head && curr != tail) ? (" at POSITION ") : xy;
+    // void debug()                            // FOR PERSONAL DEBUGGING PURPOSES
+    // {
+    //     cout << endl;
+    //     DLink<E> *temp = head;
+    //     int index = -1;
+    //     int tempindex = 0;
+    //     string tb = "    .-----------";
+    //     string tl = ".\n";
+    //     string bb = "    '-----------";
+    //     string bl = "'";
+    //     string ca = "    |  ";
+    //     string cb = "  |";
+    //     string al = "        ^    .\n";
+    //     string tc = "        |    |\n";
+    //     string ac = " |    | ";
+    //     string ar = "        '    v";
+    //     string xx = "";
+    //     string xy = "";
+    //     string xz = "";
+    //     while (temp != nullptr)
+    //     {
+    //         ostringstream oss;
+    //         oss << curr;
+    //         string s(oss.str());
+    //         int space = (((s + " ").length()) - 1);
+    //         xz = (curr == temp ? "  <-- CURR" : " ");
+    //         cout << spacer(space) << tb << dasher(space) << tl << spacer(space) << ca << temp << cb + " = " << ((temp == head) ? "HEAD" : (temp == tail) ? "TAIL" : ("POS " + to_string(index) + ": " + to_string(temp->theElement))) << xz << "\n" + spacer(space) + bb << dasher(space) << bl << endl;
+    //         (temp != tail) ? (cout << spacer(space) << al << spacer(space) << tc << temp << ac << temp->nextPtr << "\n" << spacer(space) << tc << spacer(space) << ar << endl): (cout << endl);
+    //         if (temp == curr) {
+    //             tempindex = index;
+    //         }
+    //         xx = ((curr == head) ? " - HEAD" : (curr == tail) ? " - TAIL" : " - ITEM");
+    //         xy = (curr != head && curr != tail) ? (" at POSITION ") : xy;
 
-            temp = temp->nextPtr;
-            index++;
-        }
+    //         temp = temp->nextPtr;
+    //         index++;
+    //     }
 
-        cout << "CURRENT POINTER: " << curr;
-        if (curr != head && curr != tail) {
-            cout << xx << xy << tempindex << endl;
-        }else
-        {
-            cout << xx << xy << endl;
-        }
-        cout << "NUMBER OF ITEMS: " << cnt << "\n\n\n\n" << endl;
-    }
+    //     cout << "CURRENT POINTER: " << curr;
+    //     if (curr != head && curr != tail) {
+    //         cout << xx << xy << tempindex << endl;
+    //     }else
+    //     {
+    //         cout << xx << xy << endl;
+    //     }
+    //     cout << "NUMBER OF ITEMS: " << cnt << "\n\n\n\n" << endl;
+    // }
 };
 
 /*
@@ -283,86 +294,82 @@ int main(void)
     int i;
     DList<int> theList;
     
-    theList.debug(); //-----------------------------------------------------   DEBUG
+    // theList.debug(); //-----------------------------------------------------   DEBUG
     // populate the list
-    // for (i = 0; i < 10; ++i)
-    // {
-    //     theList.insert(i+50);
-    // };
-    theList.debug();
+    for (i = 0; i < 10; ++i)
+    {
+        theList.insert(i+50);
+    };
 
-    DList<int> theDL = theList;
-    theDL.debug();
+    while (i < 20)
+    {
+        theList.insert(i);
 
-    // while (i < 20)
-    // {
-    //     theList.insert(i);
-
-    //     ++i;
-    // }
+        ++i;
+    }
     
     // theList.debug(); //-----------------------------------------------------   DEBUG
-    // // display the contents of the list
-    // theList.moveToStart();
-    // for (i = 0; i < theList.length(); ++i)
-    // {
+    // display the contents of the list
+    theList.moveToStart();
+    for (i = 0; i < theList.length(); ++i)
+    {
         
-    //     cout << theList.getValue() << " ";
-    //     theList.next();
-    // }
-    // cout << "\n";
+        cout << theList.getValue() << " ";
+        theList.next();
+    }
+    cout << "\n";
 
     // theList.debug(); //-----------------------------------------------------   DEBUG
-    // // display the contents of the list in reverse order
-    // theList.moveToEnd();
-    // for (i = 0; i < theList.length(); ++i)
-    // {
-    //     theList.prev();
+    // display the contents of the list in reverse order
+    theList.moveToEnd();
+    for (i = 0; i < theList.length(); ++i)
+    {
+        theList.prev();
 
-    //     cout << theList.getValue() << " ";
-    // }
-    // cout << "\n";
-
-    // theList.debug(); //-----------------------------------------------------   DEBUG
-    // // // replace the contents of the list
-    // theList.clear();
-    // theList.debug(); //-----------------------------------------------------   DEBUG
-    // for (i = 0; i < 10; ++i)
-    // {
-    //     theList.append(i + 100);
-    // }
+        cout << theList.getValue() << " ";
+    }
+    cout << "\n";
 
     // theList.debug(); //-----------------------------------------------------   DEBUG
-    // // display the contents of the list
-    // theList.moveToStart();
-    // for (i = 0; i < theList.length(); ++i)
-    // {
-    //     cout << theList.getValue() << " ";
+    // // replace the contents of the list
+    theList.clear();
+    // theList.debug(); //-----------------------------------------------------   DEBUG
+    for (i = 0; i < 10; ++i)
+    {
+        theList.append(i + 100);
+    }
 
-    //     theList.next();
-    // }
-    // cout << "\n";
+    // theList.debug(); //-----------------------------------------------------   DEBUG
+    // display the contents of the list
+    theList.moveToStart();
+    for (i = 0; i < theList.length(); ++i)
+    {
+        cout << theList.getValue() << " ";
+
+        theList.next();
+    }
+    cout << "\n";
     // theList.debug(); //-----------------------------------------------------   DEBUG
 
-    // // remove two elements at the specified position
-    // theList.moveToPos(5);
+    // remove two elements at the specified position
+    theList.moveToPos(5);
     // theList.debug(); //-----------------------------------------------------   DEBUG
     
-    // cout << theList.currPos() << "\n";
+    cout << theList.currPos() << "\n";
 
-    // theList.remove();
-    // theList.remove();
+    theList.remove();
+    theList.remove();
     // theList.debug(); //-----------------------------------------------------   DEBUG
 
-    // // display the contents of the list
-    // theList.moveToStart();
-    // for (i = 0; i < theList.length(); ++i)
-    // {
-    //     cout << theList.getValue() << " ";
+    // display the contents of the list
+    theList.moveToStart();
+    for (i = 0; i < theList.length(); ++i)
+    {
+        cout << theList.getValue() << " ";
 
-    //     theList.next();
-    // }
-    // cout << "\n";
+        theList.next();
+    }
+    cout << "\n";
     // theList.debug(); //-----------------------------------------------------   DEBUG
 
     return 0;
