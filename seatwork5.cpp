@@ -77,13 +77,13 @@ public:
         this->head->prevPtr = nullptr;
         this->curr = this->head;
         this->cnt = 0;
-        cout << "\n\n\n" << this << " Object created!\n\n\n"; 
+        // cout << "\n\n\n" << this << " Object created!\n\n\n"; 
     }
 
     // The copy constructor
     DList(const DList &source)
     {
-        cout << "\n\n\n" << this << " Object copy created!\n\n\n"; 
+        // cout << "\n\n\n" << this << " Object copy created!\n\n\n"; 
         this->head = new DLink<E>();
         this->tail = new DLink<E>();
         assert(this->head != NULL);
@@ -95,11 +95,11 @@ public:
         this->curr = this->head;
         this->cnt = 0;
 
-        DLink<E> *newnode = source.tail->prevPtr;
-        while (newnode->prevPtr != nullptr)
+        DLink<E> *entry = source.tail->prevPtr;
+        while (entry->prevPtr != nullptr)
         {
-            insert(newnode->theElement);
-            newnode = newnode->prevPtr;
+            insert(entry->theElement);
+            entry = entry->prevPtr;
         }
         this->moveToPos(source.currPos());
     }
@@ -107,7 +107,7 @@ public:
     // The class destructor
     ~DList()
     {
-        cout << "\n\n\n" << this << " Object destroyed!\n\n\n"; 
+        // cout << "\n\n\n" << this << " Object destroyed!\n\n\n"; 
         this->clear();
         delete this->head;
         delete this->tail;
@@ -154,6 +154,7 @@ public:
     void insert(const E &it)
     {
         DLink<E> *entry = new DLink<E>();
+        assert(entry != NULL);
         entry->theElement = it;
 
         entry->nextPtr = this->curr->nextPtr;
@@ -168,6 +169,7 @@ public:
     void append(const E &it)
     {
         DLink<E> *entry = new DLink<E>();
+        assert(entry != NULL);
         entry->theElement = it;
 
         this->tail->prevPtr->nextPtr = entry;
@@ -311,7 +313,6 @@ int main(void)
 
         ++i;
     }
-    
     // theList.debug(); //-----------------------------------------------------   DEBUG
     // display the contents of the list
     theList.moveToStart();
