@@ -69,6 +69,8 @@ public:
     {
         this->head = new DLink<E>();
         this->tail = new DLink<E>();
+        assert(this->head != NULL);
+        assert(this->tail != NULL);
         this->head->nextPtr = this->tail;
         this->tail->prevPtr = this->head;
         this->tail->nextPtr = nullptr;
@@ -84,6 +86,8 @@ public:
         cout << "\n\n\n" << this << " Object copy created!\n\n\n"; 
         this->head = new DLink<E>();
         this->tail = new DLink<E>();
+        assert(this->head != NULL);
+        assert(this->tail != NULL);
         this->head->nextPtr = this->tail;
         this->tail->prevPtr = this->head;
         this->tail->nextPtr = nullptr;
@@ -91,11 +95,11 @@ public:
         this->curr = this->head;
         this->cnt = 0;
 
-        DLink<E> *temp = source.head;
-        while (temp->nextPtr != source.tail)
+        DLink<E> *newnode = source.tail->prevPtr;
+        while (newnode->prevPtr != nullptr)
         {
-            append(temp->nextPtr->theElement);
-            temp = temp->nextPtr;
+            insert(newnode->theElement);
+            newnode = newnode->prevPtr;
         }
         this->moveToPos(source.currPos());
     }
@@ -293,7 +297,7 @@ int main(void)
 {
     int i;
     DList<int> theList;
-    
+
     // theList.debug(); //-----------------------------------------------------   DEBUG
     // populate the list
     for (i = 0; i < 10; ++i)
@@ -374,4 +378,3 @@ int main(void)
 
     return 0;
 }
-
